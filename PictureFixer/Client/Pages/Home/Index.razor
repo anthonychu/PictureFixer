@@ -1,5 +1,4 @@
 ﻿@page "/"
-@implements IDisposable
 @inject ComponentApplicationState PersistentData
 @inject HttpClient Http
 
@@ -12,7 +11,7 @@
 else
 {
     <div class="m-4 my-5 grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-        TODO: Add some images
+        TODO: list the images
     </div>
 }
 
@@ -21,22 +20,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        PersistentData.OnPersisting += PersistImageData; // Note: This API will change
-
-        if (!PersistentData.TryTakeAsJson("preloadedImageData", out images))
-        {
-            images = await Http.GetFromJsonAsync<EditableImage[]>("api/EditableImage");
-        }
-    }
-
-    private Task PersistImageData()
-    {
-        PersistentData.PersistAsJson("preloadedImageData", images);
-        return Task.CompletedTask;
-    }
-
-    void IDisposable.Dispose()
-    {
-        PersistentData.OnPersisting -= PersistImageData;
+        await Task.Delay(2000);
+        images = await Http.GetFromJsonAsync<EditableImage[]>("api/EditableImage");
     }
 }
